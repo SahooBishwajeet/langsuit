@@ -1,0 +1,35 @@
+name: Code Quality Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: ./langsuit
+        run: npm ci
+
+      - name: Run formatting check
+        working-directory: ./langsuit
+        run: npm run format
+
+      - name: Run linting
+        working-directory: ./langsuit
+        run: npm run lint
+
+      - name: Build check
+        working-directory: ./langsuit
+        run: npm run build

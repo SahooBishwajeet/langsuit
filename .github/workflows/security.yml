@@ -1,0 +1,31 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 0 * * 0" # Run weekly
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: ./langsuit
+        run: npm ci
+
+      - name: Run security audit
+        working-directory: ./langsuit
+        run: npm audit
+
+      - name: Check for outdated packages
+        working-directory: ./langsuit
+        run: npm outdated
