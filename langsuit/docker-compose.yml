@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        - NEXT_PUBLIC_CLERK_SIGN_IN_URL
+        - NEXT_PUBLIC_CLERK_SIGN_UP_URL
+        - NEXT_PUBLIC_APP_URL
+        - ENVIRONMENT
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL
+      - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+      - CLERK_SECRET_KEY
+      - NEXT_PUBLIC_CLERK_SIGN_IN_URL
+      - NEXT_PUBLIC_CLERK_SIGN_UP_URL
+      - MONGODB_URI
+      - CLERK_ADMIN_IDS
+      - STRIPE_API_SECRET_KEY
+      - STRIPE_WEBHOOK_SECRET
+      - NEXT_PUBLIC_APP_URL
+      - REDIS_URL
+      - ENVIRONMENT
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
