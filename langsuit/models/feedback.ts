@@ -20,11 +20,12 @@ const FeedbackSchema: Schema = new Schema(
     rating: { type: Number, required: true, min: 1, max: 5 },
     languagelearned: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Check if the model already exists to avoid OverwriteModelError
 const Feedback =
-  mongoose.models.Feedback || mongoose.model<IFeedback>("Feedback", FeedbackSchema);
+  mongoose.models.Feedback ||
+  mongoose.model<IFeedback>("Feedback", FeedbackSchema);
 
 export default Feedback;

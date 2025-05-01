@@ -11,7 +11,7 @@ interface SuccessResponse {
 }
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<SuccessResponse | ErrorResponse>
+  res: NextApiResponse<SuccessResponse | ErrorResponse>,
 ) {
   const { method } = req;
   await dbConnect();
@@ -31,6 +31,8 @@ export default async function handler(
           .json({ success: false, error: (error as any).message });
       }
     default:
-      return res.status(405).json({ success: false, error: "Method not allowed" });
+      return res
+        .status(405)
+        .json({ success: false, error: "Method not allowed" });
   }
 }

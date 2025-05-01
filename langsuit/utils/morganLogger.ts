@@ -39,12 +39,12 @@ const formatters = {
       method === "GET"
         ? colors.blue
         : method === "POST"
-        ? colors.green
-        : method === "DELETE"
-        ? colors.red
-        : method === "PUT"
-        ? colors.yellow
-        : colors.reset;
+          ? colors.green
+          : method === "DELETE"
+            ? colors.red
+            : method === "PUT"
+              ? colors.yellow
+              : colors.reset;
 
     return `${methodColor}${method}${colors.reset} ${url} ${statusColor}${responseStatus}${colors.reset}`;
   },

@@ -1,5 +1,5 @@
 // For 401 Unauthorized errors
-import ErrorPage from '@/components/errors/ErrorPage';
+import ErrorPage from "@/components/errors/ErrorPage";
 
 export default function UnauthorizedPage() {
   return (

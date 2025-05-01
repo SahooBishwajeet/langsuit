@@ -1,9 +1,8 @@
 // import { authMiddleware } from '@clerk/nextjs';
-import db from '@/db/drizzle';
-import { leaderboard, users } from '@/db/schema';
-import { eq, desc } from 'drizzle-orm/expressions';
-import { startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
-import { NextResponse,NextRequest } from 'next/server';
+import db from "@/db/drizzle";
+import { userProgress } from "@/db/schema";
+import { eq } from "drizzle-orm/expressions";
+import { NextRequest, NextResponse } from "next/server";
 const formatLeaderboardData = (data: any[]) => {
   return data.map((entry) => ({
     id: entry.user.id,
@@ -12,91 +11,90 @@ const formatLeaderboardData = (data: any[]) => {
   }));
 };
 
-// export const getLeaderboardData = authMiddleware(async (req, res) => {
-//   console.log("hit");
-//   const { userId } = req.auth;
+/**
+ * @swagger
+ * /api/leaderboard/read:
+ *   get:
+ *     summary: Get leaderboard data for a specific user
+ *     description: Retrieves leaderboard information for a given user ID
+ *     tags: [Leaderboard]
+ *     parameters:
+ *       - in: query
+ *         name: user_id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the user to fetch leaderboard data for
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user's leaderboard data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       userId:
+ *                         type: string
+ *                       points:
+ *                         type: integer
+ *       400:
+ *         description: User ID not provided
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ */
 
-//   if (!userId) {
-//     return res.status(401).json({ error: "Unauthorized" });
-//   }
-
-//   try {
-//     const now = new Date();
-
-//     const weeklyStart = startOfWeek(now);
-//     const weeklyEnd = endOfWeek(now);
-//     const monthlyStart = startOfMonth(now);
-//     const monthlyEnd = endOfMonth(now);
-
-//     const weeklyData = await db
-//       .select({
-//         id: leaderboard.userId,
-//         user: {
-//           id: user.id,
-//           username: user.username,
-//         },
-//         points: leaderboard.points,
-//       })
-//       .from(leaderboard)
-//       .innerJoin(user, eq(leaderboard.userId, user.id))
-//       .where(leaderboard.updatedAt.between(weeklyStart, weeklyEnd))
-//       .orderBy(desc(leaderboard.points))
-//       .limit(10);
-
-//     const monthlyData = await db
-//       .select({
-//         id: leaderboard.userId,
-//         user: {
-//           id: user.id,
-//           username: user.username,
-//         },
-//         points: leaderboard.points,
-//       })
-//       .from(leaderboard)
-//       .innerJoin(user, eq(leaderboard.userId, user.id))
-//       .where(leaderboard.updatedAt.between(monthlyStart, monthlyEnd))
-//       .orderBy(desc(leaderboard.points))
-//       .limit(10);
-
-//     const weeklyLeaderboard = formatLeaderboardData(weeklyData);
-//     const monthlyLeaderboard = formatLeaderboardData(monthlyData);
-
-//     return res.json({
-//       weekly: weeklyLeaderboard,
-//       monthly: monthlyLeaderboard,
-//     });
-//   } catch (error) {
-//     console.error("Error fetching leaderboard data:", error);
-//     return res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
-
-
-export const GET =async(req:NextRequest)=>{
+export const GET = async (req: NextRequest) => {
   try {
-    const url  = new URL(req.url);
-    const user_id = url.searchParams.get('user_id');
-    if(!user_id){
+    const url = new URL(req.url);
+    const user_id = url.searchParams.get("user_id");
+    if (!user_id) {
       return NextResponse.json({
-        status:false,
-        message:"No User Id is found"
-      })
+        status: false,
+        message: "No User Id is found",
+      });
     }
 
-    const leaderboardData = await db.select().from (leaderboard).where(eq(leaderboard.userId, Number(user_id)));
+    const userProgressData = await db
+      .select({
+        userId: userProgress.userId,
+        userName: userProgress.userName,
+        points: userProgress.points,
+      })
+      .from(userProgress)
+      .where(eq(userProgress.userId, user_id));
+
     return NextResponse.json({
-      status:true,
-      data:leaderboardData
-    })
-    
+      status: true,
+      data: userProgressData,
+    });
   } catch (error) {
     console.error(error);
 
     return NextResponse.json({
-      status:false
-     })
-
-    
+      status: false,
+    });
   }
-
-}
+};

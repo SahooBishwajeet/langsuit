@@ -16,33 +16,33 @@ export const ChallengeOptionEdit = () => {
       }}
     >
       <SimpleForm>
-        <TextInput 
-          source="text" 
-          validate={[required()]} 
-          label="Text" 
+        <TextInput
+          source="text"
+          validate={[required()]}
+          label="Text"
           sx={sharedStyles.input}
           fullWidth
         />
-        <BooleanInput 
-          source="correct" 
+        <BooleanInput
+          source="correct"
           label="Correct option"
           sx={sharedStyles.input}
         />
-        <ReferenceInput 
-          source="challengeId" 
+        <ReferenceInput
+          source="challengeId"
           reference="challenges"
           sx={sharedStyles.input}
           fullWidth
         />
-        <TextInput 
-          source="imageSrc" 
-          label="Image URL" 
+        <TextInput
+          source="imageSrc"
+          label="Image URL"
           sx={sharedStyles.input}
           fullWidth
         />
-        <TextInput 
-          source="audioSrc" 
-          label="Audio URL" 
+        <TextInput
+          source="audioSrc"
+          label="Audio URL"
           sx={sharedStyles.input}
           fullWidth
         />

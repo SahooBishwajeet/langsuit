@@ -1,26 +1,21 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
-import { Play, BookOpen, Clock, ChevronRight } from 'lucide-react';
-import { RootState, AppDispatch } from '@/redux/store';
-import { setSearchQuery } from '@/redux/filterSlice';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { Play, BookOpen, Clock, ChevronRight } from "lucide-react";
+import { RootState, AppDispatch } from "@/redux/store";
+import { setSearchQuery } from "@/redux/filterSlice";
 
-import { cn } from '@/lib/utils';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface Guidance {
   id: string;
   name: string;
   description: string | null;
-  level: 'Beginner' | 'Intermediate' | 'Advanced' | null;
+  level: "Beginner" | "Intermediate" | "Advanced" | null;
   price: number | null;
   visits: number | null;
   instructorId: number;
@@ -32,34 +27,38 @@ export default function TheaterPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const searchQuery = useSelector((state: RootState) => state.courseFilter.searchQuery);
+  const searchQuery = useSelector(
+    (state: RootState) => state.courseFilter.searchQuery,
+  );
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   useEffect(() => {
     const fetchGuidances = async () => {
       try {
-        const response = await fetch('/api/guidance/available');
+        const response = await fetch("/api/guidance/available");
         const rawData = await response.json();
         const guidancesData = Array.isArray(rawData)
           ? rawData
           : rawData.guidances
-          ? rawData.guidances
-          : rawData.data;
+            ? rawData.guidances
+            : rawData.data;
         console.log(guidancesData);
         const validGuidances = guidancesData.filter(
-          (guidance) => guidance && typeof guidance.name === 'string'
+          (guidance) => guidance && typeof guidance.name === "string",
         );
 
         if (validGuidances.length === 0) {
-          throw new Error('No valid guidances found');
+          throw new Error("No valid guidances found");
         }
 
         setGuidances(validGuidances);
         setLoading(false);
       } catch (err) {
-        console.error('Guidances fetch error:', err);
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        console.error("Guidances fetch error:", err);
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred",
+        );
         setLoading(false);
       }
     };
@@ -72,7 +71,7 @@ export default function TheaterPage() {
   };
 
   const filteredGuidances = guidances.filter((guidance) =>
-    guidance.name.toLowerCase().includes(searchQuery.toLowerCase())
+    guidance.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   if (loading) {
@@ -129,7 +128,9 @@ export default function TheaterPage() {
               className="bg-gray-900 border-gray-800 hover:border-blue-600 transition-all duration-300"
             >
               <CardHeader className="p-4">
-                <CardTitle className="text-xl text-white">{guidance.name}</CardTitle>
+                <CardTitle className="text-xl text-white">
+                  {guidance.name}
+                </CardTitle>
               </CardHeader>
               <CardContent className="p-4">
                 <div className="space-y-4">
@@ -140,20 +141,26 @@ export default function TheaterPage() {
                     <span>${guidance.price || 0}</span>
                   </div>
                   <p className="text-gray-300 line-clamp-3">
-                    {guidance.description || 'No description available'}
+                    {guidance.description || "No description available"}
                   </p>
                   <div className="flex items-center justify-between">
                     <span
                       className={cn(
-                        'px-3 py-1 rounded-full text-sm',
-                        guidance.level === 'Beginner' && 'bg-green-900 text-green-300',
-                        guidance.level === 'Intermediate' && 'bg-yellow-900 text-yellow-300',
-                        guidance.level === 'Advanced' && 'bg-red-900 text-red-300'
+                        "px-3 py-1 rounded-full text-sm",
+                        guidance.level === "Beginner" &&
+                          "bg-green-900 text-green-300",
+                        guidance.level === "Intermediate" &&
+                          "bg-yellow-900 text-yellow-300",
+                        guidance.level === "Advanced" &&
+                          "bg-red-900 text-red-300",
                       )}
                     >
                       {/* {guidance.level || 'Unknown'} */}
                     </span>
-                    <Button onClick={() => handleGuidanceSelect(guidance)} className="group">
+                    <Button
+                      onClick={() => handleGuidanceSelect(guidance)}
+                      className="group"
+                    >
                       Start Guidance
                       <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>

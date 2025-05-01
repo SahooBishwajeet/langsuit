@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { motion } from "framer-motion";
 import { ArrowRight, Database, LineChart, Settings, Users } from "lucide-react";
@@ -9,7 +9,7 @@ const DashboardCard = ({
   description,
   icon: Icon,
   href,
-  delay
+  delay,
 }: {
   title: string;
   description: string;

@@ -27,12 +27,8 @@
           "name": "admin_user_id_users_id_fk",
           "tableFrom": "admin",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -95,12 +91,8 @@
           "name": "courses_instructor_id_instructor_id_fk",
           "tableFrom": "courses",
           "tableTo": "instructor",
-          "columnsFrom": [
-            "instructor_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["instructor_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -131,12 +123,8 @@
           "name": "follow_list_user_id_users_id_fk",
           "tableFrom": "follow_list",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -144,12 +132,8 @@
           "name": "follow_list_instructor_id_instructor_id_fk",
           "tableFrom": "follow_list",
           "tableTo": "instructor",
-          "columnsFrom": [
-            "instructor_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["instructor_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -157,10 +141,7 @@
       "compositePrimaryKeys": {
         "follow_list_user_id_instructor_id_pk": {
           "name": "follow_list_user_id_instructor_id_pk",
-          "columns": [
-            "user_id",
-            "instructor_id"
-          ]
+          "columns": ["user_id", "instructor_id"]
         }
       },
       "uniqueConstraints": {}
@@ -188,12 +169,8 @@
           "name": "instructor_user_id_users_id_fk",
           "tableFrom": "instructor",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -304,12 +281,8 @@
           "name": "live_stream_instructor_id_instructor_id_fk",
           "tableFrom": "live_stream",
           "tableTo": "instructor",
-          "columnsFrom": [
-            "instructor_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["instructor_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -340,12 +313,8 @@
           "name": "naive_user_id_users_id_fk",
           "tableFrom": "naive",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -408,12 +377,8 @@
           "name": "sales_user_id_users_id_fk",
           "tableFrom": "sales",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -421,12 +386,8 @@
           "name": "sales_course_id_courses_id_fk",
           "tableFrom": "sales",
           "tableTo": "courses",
-          "columnsFrom": [
-            "course_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["course_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -434,12 +395,8 @@
           "name": "sales_stream_id_live_stream_id_fk",
           "tableFrom": "sales",
           "tableTo": "live_stream",
-          "columnsFrom": [
-            "stream_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["stream_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -490,12 +447,8 @@
           "name": "ticket_stream_id_live_stream_id_fk",
           "tableFrom": "ticket",
           "tableTo": "live_stream",
-          "columnsFrom": [
-            "stream_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["stream_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -503,12 +456,8 @@
           "name": "ticket_user_id_users_id_fk",
           "tableFrom": "ticket",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -567,12 +516,8 @@
           "name": "user_progress_user_id_users_id_fk",
           "tableFrom": "user_progress",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -580,12 +525,8 @@
           "name": "user_progress_active_course_id_courses_id_fk",
           "tableFrom": "user_progress",
           "tableTo": "courses",
-          "columnsFrom": [
-            "active_course_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["active_course_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }

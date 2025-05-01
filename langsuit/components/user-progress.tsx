@@ -53,7 +53,11 @@ export const UserProgress = ({
             src="/hearts.svg"
             alt="Hearts"
           />
-          {hasActiveSubscription ? <InfinityIcon className="h-4 w-4 stroke-[3]" /> : hearts}
+          {hasActiveSubscription ? (
+            <InfinityIcon className="h-4 w-4 stroke-[3]" />
+          ) : (
+            hearts
+          )}
         </Button>
       </Link>
     </div>

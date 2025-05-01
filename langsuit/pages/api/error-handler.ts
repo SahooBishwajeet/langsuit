@@ -6,9 +6,9 @@ import {
   UnauthorizedError,
   DatabaseError,
   LanguageNotSupportedError,
-  LessonNotFoundError
+  LessonNotFoundError,
 } from "../../lib/errors/custom-errors";
-const { errorHandler } = require('nextjs-centralized-error-handler');
+const { errorHandler } = require("nextjs-centralized-error-handler");
 
 interface SuccessResponse {
   message: string;
@@ -31,52 +31,52 @@ const customLoggerFunction = (error: Error, req: NextApiRequest) => {
     error: {
       name: error.name,
       message: error.message,
-      stack: error.stack
+      stack: error.stack,
     },
     query: req.query,
-    body: req.body
+    body: req.body,
   });
 };
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<SuccessResponse | ErrorResponse>
+  res: NextApiResponse<SuccessResponse | ErrorResponse>,
 ) => {
   // Test different error scenarios based on query parameter
   const testCase = req.query.test;
 
   switch (testCase) {
-    case 'validation':
+    case "validation":
       if (!req.body.name) {
-        throw new ValidationError('Name field is required');
+        throw new ValidationError("Name field is required");
       }
       break;
-    case 'auth':
-      throw new UnauthorizedError('Please log in to continue');
-    case 'notfound':
-      throw new NotFoundError('User');
-    case 'language':
-      throw new LanguageNotSupportedError('Klingon');
-    case 'lesson':
-      throw new LessonNotFoundError('123');
-    case 'database':
-      throw new DatabaseError('Failed to connect to database');
-    case 'error':
-      throw new Error('Generic error test');
+    case "auth":
+      throw new UnauthorizedError("Please log in to continue");
+    case "notfound":
+      throw new NotFoundError("User");
+    case "language":
+      throw new LanguageNotSupportedError("Klingon");
+    case "lesson":
+      throw new LessonNotFoundError("123");
+    case "database":
+      throw new DatabaseError("Failed to connect to database");
+    case "error":
+      throw new Error("Generic error test");
   }
 
-  res.status(200).json({ message: 'Success' });
+  res.status(200).json({ message: "Success" });
 };
 
 const options = {
   logger: customLoggerFunction,
-  defaultMessage: 'Something went wrong!',
+  defaultMessage: "Something went wrong!",
   formatError: (error: Error, req: NextApiRequest) => ({
     message: error.message,
     type: error.name,
     timestamp: new Date().toISOString(),
     path: req.url,
-    method: req.method
+    method: req.method,
   }),
 };
 

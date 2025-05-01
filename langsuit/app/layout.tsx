@@ -2,13 +2,11 @@ import { ExitModal } from "@/components/modals/exit-modal";
 import { HeartsModal } from "@/components/modals/hearts-modal";
 import { PracticeModal } from "@/components/modals/practice-modal";
 import { Toaster } from "@/components/ui/sonner";
-import {
-  ClerkProvider
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
-import { ReduxProvider } from '../redux/provider';
+import { ReduxProvider } from "../redux/provider";
 
 const font = Nunito({ subsets: ["latin"] });
 
@@ -19,9 +17,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly < {
+}: Readonly<{
   children: React.ReactNode;
-} > ){
+}>) {
   return (
     <ClerkProvider>
       <html lang="en">
@@ -30,9 +28,7 @@ export default function RootLayout({
           <ExitModal />
           <HeartsModal />
           <PracticeModal />
-          <ReduxProvider >
-            {children}
-          </ReduxProvider>
+          <ReduxProvider>{children}</ReduxProvider>
         </body>
       </html>
     </ClerkProvider>

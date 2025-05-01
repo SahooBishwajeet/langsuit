@@ -1,6 +1,10 @@
 import redis from "./redis";
 
-export async function getCachedResponse(key: string, fetcher: () => Promise<any>, ttl: number = 900) {
+export async function getCachedResponse(
+  key: string,
+  fetcher: () => Promise<any>,
+  ttl: number = 900,
+) {
   try {
     // Check if cached data exists
     const cachedData = await redis.get(key);

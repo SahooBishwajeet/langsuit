@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write \"**/*.{ts,tsx,json,css,md}\" --ignore-unknown",
     "db:studio": "npx drizzle-kit studio",
     "db:push": "npx drizzle-kit push",
-    "db:seed": "tsx ./scripts/seed.ts"
+    "db:seed": "tsx ./scripts/seed.ts",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.758.0",
@@ -46,6 +48,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "next": "^14.2.7",
+    "next-swagger-doc": "^0.4.1",
     "next-themes": "^0.3.0",
     "nextjs-centralized-error-handler": "^1.0.17",
     "plyr": "^3.7.8",
@@ -66,6 +69,7 @@
     "sonner": "^1.5.0",
     "stripe": "^17.4.0",
     "svix": "^1.35.0",
+    "swagger-ui-react": "^5.21.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "unzipper": "^0.12.3",
@@ -73,13 +77,19 @@
   },
   "devDependencies": {
     "@types/date-fns": "^2.6.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/multer": "^1.4.12",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/swagger-ui-react": "^5.18.0",
+    "@types/unzipper": "^0.10.11",
     "drizzle-kit": "^0.24.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.7",
+    "husky": "^9.1.7",
     "postcss": "^8",
+    "prettier": "^3.5.3",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.2",
     "typescript": "^5"

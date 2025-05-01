@@ -16,9 +16,9 @@ export const UnitCreate = () => {
       }}
     >
       <SimpleForm>
-        <TextInput 
-          source="title" 
-          validate={[required()]} 
+        <TextInput
+          source="title"
+          validate={[required()]}
           label="Title"
           sx={sharedStyles.input}
           fullWidth
@@ -30,15 +30,15 @@ export const UnitCreate = () => {
           sx={sharedStyles.input}
           fullWidth
         />
-        <ReferenceInput 
-          source="courseId" 
+        <ReferenceInput
+          source="courseId"
           reference="courses"
           sx={sharedStyles.input}
           fullWidth
         />
-        <NumberInput 
-          source="order" 
-          validate={required()} 
+        <NumberInput
+          source="order"
+          validate={required()}
           label="Order"
           sx={sharedStyles.input}
           fullWidth

@@ -2,7 +2,6 @@ import { getCourses, getUserProgress } from "@/db/queries";
 
 import { List } from "./list";
 
-
 // const getCourses = async () => {
 //   return [
 //     { id: 1, title: "English", description: "Learn English basics", imageSrc: "/US - United States.svg" },

@@ -5,35 +5,35 @@ export const CourseCreate = () => {
   return (
     <Create
       sx={{
-        '& .RaCreate-main': sharedStyles.card
+        "& .RaCreate-main": sharedStyles.card,
       }}
     >
       <SimpleForm>
-        <TextInput 
-          source="title" 
-          validate={[required()]} 
-          label="Title" 
+        <TextInput
+          source="title"
+          validate={[required()]}
+          label="Title"
           sx={sharedStyles.input}
           fullWidth
         />
-        <TextInput 
-          source="imageSrc" 
-          validate={[required()]} 
-          label="Image" 
+        <TextInput
+          source="imageSrc"
+          validate={[required()]}
+          label="Image"
           sx={sharedStyles.input}
           fullWidth
         />
-        <TextInput 
-          source="instructorId" 
-          validate={[required()]} 
-          label="Instructor" 
+        <TextInput
+          source="instructorId"
+          validate={[required()]}
+          label="Instructor"
           sx={sharedStyles.input}
           fullWidth
         />
-        <TextInput 
-          source="category" 
-          validate={[required()]} 
-          label="Category" 
+        <TextInput
+          source="category"
+          validate={[required()]}
+          label="Category"
           sx={sharedStyles.input}
           fullWidth
         />

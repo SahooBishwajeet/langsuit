@@ -43,7 +43,7 @@ export const CourseAnalytics = () => {
     ([name, value]) => ({
       name,
       value,
-    })
+    }),
   );
 
   // 2. Instructor wise total courses
@@ -56,7 +56,7 @@ export const CourseAnalytics = () => {
     ([id, count]) => ({
       instructor: `Instructor ${id}`,
       courses: count,
-    })
+    }),
   );
 
   // 3. Instructor wise language distribution
@@ -75,7 +75,7 @@ export const CourseAnalytics = () => {
     ([instructorId, langs]) => ({
       instructor: `Instructor ${instructorId}`,
       ...langs,
-    })
+    }),
   );
 
   // 4 & 5. Revenue calculations
@@ -88,18 +88,18 @@ export const CourseAnalytics = () => {
         (acc.byInstructor[course.instructorId] || 0) + revenue;
       return acc;
     },
-    { byLanguage: {}, byInstructor: {} }
+    { byLanguage: {}, byInstructor: {} },
   );
 
   const languageRevenueData = Object.entries(revenueData?.byLanguage || {}).map(
     ([language, revenue]) => ({
       language,
       revenue,
-    })
+    }),
   );
 
   const instructorRevenueData = Object.entries(
-    revenueData?.byInstructor || {}
+    revenueData?.byInstructor || {},
   ).map(([id, revenue]) => ({
     instructor: `Instructor ${id}`,
     revenue,

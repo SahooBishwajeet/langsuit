@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -44,7 +44,7 @@ export default function NotFound() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          Oops! The page you're looking for has vanished into thin air.
+          Oops! The page you&apos;re looking for has vanished into thin air.
         </motion.p>
 
         <motion.div

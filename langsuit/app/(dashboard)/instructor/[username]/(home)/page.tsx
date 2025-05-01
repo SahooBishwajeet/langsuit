@@ -1,31 +1,42 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { motion } from 'framer-motion';
-import { useParams } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import AddCourseModal from './_components/AddCourseModal';
+import React, { useEffect, useState } from "react";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+import { motion } from "framer-motion";
+import { useParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import AddCourseModal from "./_components/AddCourseModal";
 const MotionCard = motion(Card);
 
 const cardVariants = {
   hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 const chartVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { delay: 0.5, duration: 0.8, ease: "easeOut" } }
+  visible: {
+    opacity: 1,
+    transition: { delay: 0.5, duration: 0.8, ease: "easeOut" },
+  },
 };
 
 const darkThemeColors = {
-  background: '#1f2937', // Dark gray for the background
-  cardBackground: '#374151', // Slightly lighter dark gray for cards
-  text: '#e5e7eb', // Light gray for text
-  highlightText: '#d1d5db', // Slightly darker gray for smaller text
-  axisLine: '#9ca3af', // Color for X and Y axis lines
-  tooltipBackground: '#333333', // Tooltip background color
+  background: "#1f2937", // Dark gray for the background
+  cardBackground: "#374151", // Slightly lighter dark gray for cards
+  text: "#e5e7eb", // Light gray for text
+  highlightText: "#d1d5db", // Slightly darker gray for smaller text
+  axisLine: "#9ca3af", // Color for X and Y axis lines
+  tooltipBackground: "#333333", // Tooltip background color
 };
 
 interface Course {
@@ -45,37 +56,43 @@ const CourseManagement = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        if (!username) throw new Error('Username is required');
+        if (!username) throw new Error("Username is required");
 
-        const response = await fetch('/api/guidance/instructor', {
-          method: 'POST',
+        const response = await fetch("/api/guidance/instructor", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ username }),
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch course data');
+          throw new Error("Failed to fetch course data");
         }
 
         const data = await response.json();
         setCourses(data.courses || []);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred",
+        );
       } finally {
         setLoading(false);
       }
     };
 
-    if (username) fetchCourses(); 
+    if (username) fetchCourses();
   }, [username]);
 
   const totalVisits = courses.reduce((sum, course) => sum + course.visits, 0);
   const avgPrice =
     courses.length > 0
-      ? (courses.reduce((sum, course) => sum + course.price, 0) / courses.length / 100).toFixed(2)
-      : '0.00';
+      ? (
+          courses.reduce((sum, course) => sum + course.price, 0) /
+          courses.length /
+          100
+        ).toFixed(2)
+      : "0.00";
 
   const handleAddCourse = (newCourse: Course) => {
     setCourses((prevCourses) => [...prevCourses, newCourse]);
@@ -105,8 +122,8 @@ const CourseManagement = () => {
       className="space-y-4"
       style={{
         backgroundColor: darkThemeColors.background,
-        minHeight: '100vh',
-        padding: '20px',
+        minHeight: "100vh",
+        padding: "20px",
       }}
     >
       {/* Summary Cards */}
@@ -118,7 +135,10 @@ const CourseManagement = () => {
         style={{ backgroundColor: darkThemeColors.cardBackground }}
       >
         <CardHeader>
-          <h2 className="text-2xl font-bold" style={{ color: darkThemeColors.text }}>
+          <h2
+            className="text-2xl font-bold"
+            style={{ color: darkThemeColors.text }}
+          >
             Course Management
           </h2>
         </CardHeader>
@@ -132,10 +152,16 @@ const CourseManagement = () => {
               style={{ backgroundColor: darkThemeColors.cardBackground }}
             >
               <CardContent>
-                <p className="text-lg font-semibold" style={{ color: darkThemeColors.highlightText }}>
+                <p
+                  className="text-lg font-semibold"
+                  style={{ color: darkThemeColors.highlightText }}
+                >
                   Total Courses
                 </p>
-                <p className="text-3xl font-bold" style={{ color: darkThemeColors.text }}>
+                <p
+                  className="text-3xl font-bold"
+                  style={{ color: darkThemeColors.text }}
+                >
                   {courses.length}
                 </p>
               </CardContent>
@@ -149,10 +175,16 @@ const CourseManagement = () => {
               style={{ backgroundColor: darkThemeColors.cardBackground }}
             >
               <CardContent>
-                <p className="text-lg font-semibold" style={{ color: darkThemeColors.highlightText }}>
+                <p
+                  className="text-lg font-semibold"
+                  style={{ color: darkThemeColors.highlightText }}
+                >
                   Total Visits
                 </p>
-                <p className="text-3xl font-bold" style={{ color: darkThemeColors.text }}>
+                <p
+                  className="text-3xl font-bold"
+                  style={{ color: darkThemeColors.text }}
+                >
                   {totalVisits}
                 </p>
               </CardContent>
@@ -166,10 +198,16 @@ const CourseManagement = () => {
               style={{ backgroundColor: darkThemeColors.cardBackground }}
             >
               <CardContent>
-                <p className="text-lg font-semibold" style={{ color: darkThemeColors.highlightText }}>
+                <p
+                  className="text-lg font-semibold"
+                  style={{ color: darkThemeColors.highlightText }}
+                >
                   Avg. Price
                 </p>
-                <p className="text-3xl font-bold" style={{ color: darkThemeColors.text }}>
+                <p
+                  className="text-3xl font-bold"
+                  style={{ color: darkThemeColors.text }}
+                >
                   ${avgPrice}
                 </p>
               </CardContent>
@@ -217,7 +255,6 @@ const CourseManagement = () => {
           onAddCourse={handleAddCourse}
         />
       </div>
-
     </div>
   );
 };

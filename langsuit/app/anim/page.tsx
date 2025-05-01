@@ -1,14 +1,14 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const messages = [
   "Entering Quests",
   "Creating Personalized Selection",
   "Generating Challenges",
   "Wait For A Minute",
-  "Entering A New World!!!"
+  "Entering A New World!!!",
 ];
 
 const getRandomMessage = () => {
@@ -17,7 +17,7 @@ const getRandomMessage = () => {
 
 const WaitingPage = () => {
   const [message, setMessage] = useState(getRandomMessage());
-  const [dots, setDots] = useState('');
+  const [dots, setDots] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -26,11 +26,11 @@ const WaitingPage = () => {
     }, 1000); // Change message every 2 seconds
 
     const dotsInterval = setInterval(() => {
-      setDots(prev => (prev.length < 3 ? prev + '.' : ''));
+      setDots((prev) => (prev.length < 3 ? prev + "." : ""));
     }, 500); // Update dots every 0.5 seconds
 
     const timeout = setTimeout(() => {
-      router.push('/lesson');
+      router.push("/lesson");
     }, 6000); // Redirect after 5 seconds
 
     return () => {
@@ -42,7 +42,10 @@ const WaitingPage = () => {
 
   return (
     <div className="flex items-center justify-center h-screen text-center">
-      <h1 className="text-2xl">{message}{dots}</h1>
+      <h1 className="text-2xl">
+        {message}
+        {dots}
+      </h1>
     </div>
   );
 };

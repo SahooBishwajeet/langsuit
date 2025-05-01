@@ -10,7 +10,7 @@ import {
   text,
   timestamp,
   varchar,
-  numeric
+  numeric,
 } from "drizzle-orm/pg-core";
 
 // Reusable chunks
@@ -162,7 +162,7 @@ export const challengeOptionsRelations = relations(
       fields: [challengeOptions.challengeId],
       references: [challenges.id],
     }),
-  })
+  }),
 );
 
 export const challengeProgress = pgTable("challenge_progress", {
@@ -181,7 +181,7 @@ export const challengeProgressRelations = relations(
       fields: [challengeProgress.challengeId],
       references: [challenges.id],
     }),
-  })
+  }),
 );
 
 export const userProgress = pgTable("user_progress", {
@@ -221,7 +221,7 @@ export const followList = pgTable(
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.instructorId] }),
-  })
+  }),
 );
 
 export const followListRelations = relations(followList, ({ one }) => ({
@@ -272,10 +272,10 @@ export const tickets = pgTable("tickets", {
   id: serial("id").primaryKey(), // Auto-incrementing primary key
   guidanceId: integer("guidance_id")
     .notNull()
-    .references(() => guidance.id, { onDelete: "cascade" }), 
-  userId: text("user_id"), 
-  row: text("row").notNull(), 
-  column: integer("column").notNull(), 
+    .references(() => guidance.id, { onDelete: "cascade" }),
+  userId: text("user_id"),
+  row: text("row").notNull(),
+  column: integer("column").notNull(),
   purchasedAt: timestamp("purchased_at").defaultNow().notNull(),
   isBooked: boolean("is_booked").default(false).notNull(),
 });
@@ -326,35 +326,32 @@ export const userQuests = pgTable("userQuests", {
   progress: integer("progress"),
 });
 
-
-
-export const languageProgress= pgTable("language_progress", {
+export const languageProgress = pgTable("language_progress", {
   userId: integer("user_id")
     .notNull()
     .references(() => users.id),
-    username: text("username"),
-  languageId: integer("language_id")
-    .notNull(),
-    languageName: text("language_name"),
+  username: text("username"),
+  languageId: integer("language_id").notNull(),
+  languageName: text("language_name"),
   progress: integer("progress"),
-})
+});
 
 export const guidance = pgTable("guidance", {
   id: serial("id").primaryKey(),
-  instructorId: integer("instructor_id") 
+  instructorId: integer("instructor_id")
     .notNull()
     .references(() => instructor.id, { onDelete: "cascade" }),
-  name: text("name").notNull(), 
-  description: text("description"), 
-  price: numeric("price").notNull(), 
-  durationInHours: integer("duration_in_hours").notNull(), 
-  createdAt: timestamp("created_at").defaultNow().notNull(), 
-  updatedAt: timestamp("updated_at").defaultNow().notNull(), 
+  name: text("name").notNull(),
+  description: text("description"),
+  price: numeric("price").notNull(),
+  durationInHours: integer("duration_in_hours").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export const videosList = pgTable('videos_list', {
-  id: serial('id').primaryKey(),
-  courseId: integer('courseId').references(() => guidance.id),
-  title: text('title'),
-  url: text('url'),
+export const videosList = pgTable("videos_list", {
+  id: serial("id").primaryKey(),
+  courseId: integer("courseId").references(() => guidance.id),
+  title: text("title"),
+  url: text("url"),
 });

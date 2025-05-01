@@ -1,5 +1,5 @@
 // For 403 Forbidden errors
-import ErrorPage from '@/components/errors/ErrorPage';
+import ErrorPage from "@/components/errors/ErrorPage";
 
 export default function ForbiddenPage() {
   return (

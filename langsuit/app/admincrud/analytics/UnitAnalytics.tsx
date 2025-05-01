@@ -47,7 +47,7 @@ export const UnitAnalytics = () => {
     ([title, count]) => ({
       name: title,
       value: count,
-    })
+    }),
   );
 
   // 2. Units per instructor (combining course and unit data)
@@ -70,7 +70,7 @@ export const UnitAnalytics = () => {
     ([instructorId, data]) => ({
       instructor: `Instructor ${instructorId}`,
       units: data.count,
-    })
+    }),
   );
 
   // 3. Course distribution by unit count categories
@@ -85,7 +85,7 @@ export const UnitAnalytics = () => {
     ([category, count]) => ({
       name: category,
       value: count,
-    })
+    }),
   );
 
   return (

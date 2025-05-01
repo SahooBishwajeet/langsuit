@@ -1,4 +1,4 @@
-export const POST = async (req: Request,res: Response) => {
-    console.log("first");
-    res.json();
+export const POST = async (req: Request, res: Response) => {
+  console.log("first");
+  res.json();
 };

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSearchQuery } from '@/redux/searchSlice';
+import React, { useState, useEffect } from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchQuery } from "@/redux/searchSlice";
 
 // Type definition for Guidance
 interface Guidance {
@@ -21,7 +21,9 @@ const CourseSelectionPage: React.FC = () => {
   const [guidances, setGuidances] = useState<Guidance[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const searchQuery = useSelector((state: { search: { query: string } }) => state.search.query);
+  const searchQuery = useSelector(
+    (state: { search: { query: string } }) => state.search.query,
+  );
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -29,20 +31,23 @@ const CourseSelectionPage: React.FC = () => {
     const fetchAvailableGuidances = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3000/api/guidance/available', {
-          method: 'GET',
-        });
+        const response = await fetch(
+          "http://localhost:3000/api/guidance/available",
+          {
+            method: "GET",
+          },
+        );
 
         if (!response.ok) {
-          throw new Error('Failed to fetch guidances');
+          throw new Error("Failed to fetch guidances");
         }
 
         const data = await response.json();
         setGuidances(data.data);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching guidances:', err);
-        setError('Unable to load guidances. Please try again later.');
+        console.error("Error fetching guidances:", err);
+        setError("Unable to load guidances. Please try again later.");
         setLoading(false);
       }
     };
@@ -55,10 +60,11 @@ const CourseSelectionPage: React.FC = () => {
   };
 
   // Filter guidances based on search query
-  const filteredGuidances = guidances.filter((guidance) =>
-    guidance.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    guidance.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    guidance.instructorName.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredGuidances = guidances.filter(
+    (guidance) =>
+      guidance.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      guidance.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      guidance.instructorName.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +74,9 @@ const CourseSelectionPage: React.FC = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-pulse text-amber-500">Loading available guidances...</div>
+        <div className="animate-pulse text-amber-500">
+          Loading available guidances...
+        </div>
       </div>
     );
   }
@@ -104,7 +112,9 @@ const CourseSelectionPage: React.FC = () => {
             className="bg-gray-900 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
           >
             <div className="mb-4">
-              <h2 className="text-xl font-semibold text-white mb-2">{guidance.name}</h2>
+              <h2 className="text-xl font-semibold text-white mb-2">
+                {guidance.name}
+              </h2>
               <p className="text-gray-400 mb-4">{guidance.description}</p>
             </div>
 
@@ -120,7 +130,9 @@ const CourseSelectionPage: React.FC = () => {
             </div>
 
             <div className="flex justify-between items-center">
-              <div className="text-amber-500 font-bold text-lg">${guidance.price}</div>
+              <div className="text-amber-500 font-bold text-lg">
+                ${guidance.price}
+              </div>
               <Button
                 onClick={() => handleCourseSelect(guidance.id)}
                 className="bg-amber-500 text-black hover:bg-amber-600"

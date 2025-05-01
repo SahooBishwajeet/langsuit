@@ -1,5 +1,5 @@
 // For 429 Too Many Requests
-import ErrorPage from '@/components/errors/ErrorPage';
+import ErrorPage from "@/components/errors/ErrorPage";
 
 export default function RateLimitedPage() {
   return (

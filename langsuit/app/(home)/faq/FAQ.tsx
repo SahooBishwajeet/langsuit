@@ -1,8 +1,13 @@
-'use client';
+"use client";
 
-import { Loader } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { Loader } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 
 interface FAQData {
   _id: string;
@@ -13,7 +18,7 @@ interface FAQData {
 export default function FAQSearch() {
   const [faqData, setFaqData] = useState<FAQData[] | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchFAQData();
@@ -21,16 +26,16 @@ export default function FAQSearch() {
 
   const fetchFAQData = async () => {
     setLoading(true);
-    setError('');
+    setError("");
     try {
-      const response = await fetch('/api/seed-faq'); // Ensure this matches your API route
+      const response = await fetch("/api/seed-faq"); // Ensure this matches your API route
       if (!response.ok) {
-        throw new Error('Failed to fetch FAQ data');
+        throw new Error("Failed to fetch FAQ data");
       }
       const data = await response.json();
       setFaqData(data.data); // Assuming the response is in a 'data' field
     } catch (err) {
-      setError('Failed to fetch FAQ data');
+      setError("Failed to fetch FAQ data");
       setFaqData(null);
     } finally {
       setLoading(false);
@@ -48,7 +53,9 @@ export default function FAQSearch() {
 
       {faqData && (
         <div>
-          <h2 className="text-3xl font-semibold mb-6">Frequently Asked Questions</h2>
+          <h2 className="text-3xl font-semibold mb-6">
+            Frequently Asked Questions
+          </h2>
           <Accordion type="single" collapsible>
             {faqData.map((faq) => (
               <AccordionItem key={faq._id} value={`item-${faq._id}`}>

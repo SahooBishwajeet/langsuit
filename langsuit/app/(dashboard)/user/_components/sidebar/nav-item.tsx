@@ -27,7 +27,7 @@ export const NavItem = ({
       className={cn(
         "w-full h-12",
         collapsed ? "justify-center" : "justify-start",
-        isActive && "bg-accent"
+        isActive && "bg-accent",
       )}
     >
       <Link href={href}>

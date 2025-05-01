@@ -52,7 +52,7 @@ export const ChallengeAnalytics = () => {
     ([type, count]) => ({
       name: type,
       value: count,
-    })
+    }),
   );
 
   // 2. Hierarchical Challenge Distribution
@@ -91,7 +91,7 @@ export const ChallengeAnalytics = () => {
     ([course, data]) => ({
       name: course,
       value: data.total,
-    })
+    }),
   );
 
   // 4. Type Distribution by Course
@@ -109,7 +109,7 @@ export const ChallengeAnalytics = () => {
         course,
         ...types,
       };
-    }
+    },
   );
 
   // 5. Detailed lesson-level challenge distribution
@@ -135,7 +135,7 @@ export const ChallengeAnalytics = () => {
   }, {});
 
   const detailedChallengeData = Object.values(lessonLevelData || {}).sort(
-    (a, b) => a.courseName.localeCompare(b.courseName)
+    (a, b) => a.courseName.localeCompare(b.courseName),
   );
 
   return (

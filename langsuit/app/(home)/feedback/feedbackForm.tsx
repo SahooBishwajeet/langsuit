@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
@@ -43,23 +43,30 @@ const FeedbackForm = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [submitMessage, setSubmitMessage] = useState<{text: string, isError: boolean} | null>(null);
+  const [submitMessage, setSubmitMessage] = useState<{
+    text: string;
+    isError: boolean;
+  } | null>(null);
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const res = await fetch('/api/csrf');
+        const res = await fetch("/api/csrf");
         const { csrfToken } = await res.json();
         setCsrfToken(csrfToken);
       } catch (error) {
-        console.error('Error fetching CSRF token:', error);
+        console.error("Error fetching CSRF token:", error);
       }
     };
 
     fetchCsrfToken();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value } = e.target;
 
     setFormData((prev) => ({
@@ -118,7 +125,7 @@ const FeedbackForm = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMsg }));
     return errorMsg === "";
   };
-  
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
@@ -137,7 +144,10 @@ const FeedbackForm = () => {
 
     // Also validate languagelearned if it has a value
     if (formData.languagelearned) {
-      const isFieldValid = validateField("languagelearned", formData.languagelearned);
+      const isFieldValid = validateField(
+        "languagelearned",
+        formData.languagelearned,
+      );
       isValid = isValid && isFieldValid;
     }
 
@@ -151,7 +161,7 @@ const FeedbackForm = () => {
     if (!validateForm()) {
       setSubmitMessage({
         text: "Please fix the errors before submitting.",
-        isError: true
+        isError: true,
       });
       return;
     }
@@ -171,22 +181,25 @@ const FeedbackForm = () => {
     }
 
     setIsSubmitting(true);
-  
+
     try {
       const response = await fetch("/api/feedback", {
         method: "POST",
-        headers: { "Content-Type": "application/json", 'X-CSRF-Token': csrfToken || '' },
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken || "",
+        },
         body: JSON.stringify(formData),
       });
-  
+
       const result = await response.json();
-  
+
       if (response.ok) {
         setSubmitMessage({
           text: result.message || "Feedback submitted successfully!",
-          isError: false
+          isError: false,
         });
-        
+
         setFormData({
           name: "",
           email: "",
@@ -201,37 +214,44 @@ const FeedbackForm = () => {
       } else {
         setSubmitMessage({
           text: `Error: ${result.message || "Failed to submit feedback"}`,
-          isError: true
+          isError: true,
         });
       }
     } catch (error) {
       console.error("Error submitting feedback:", error);
       setSubmitMessage({
         text: "An error occurred while submitting feedback.",
-        isError: true
+        isError: true,
       });
     } finally {
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <div className="flex justify-center items-center min-h-screen p-4">
       <div className="w-full max-w-3xl bg-slate-50 shadow-lg rounded-lg overflow-hidden">
         <div className="bg-slate-700 text-white py-4 px-6">
           <h2 className="text-xl font-bold">Feedback Form</h2>
-          <p className="text-slate-200">We value your feedback! Please fill out the form below.</p>
+          <p className="text-slate-200">
+            We value your feedback! Please fill out the form below.
+          </p>
         </div>
-        
+
         {submitMessage && (
-          <div className={`p-4 ${submitMessage.isError ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+          <div
+            className={`p-4 ${submitMessage.isError ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}
+          >
             {submitMessage.text}
           </div>
         )}
-        
+
         <form className="px-6 py-4" onSubmit={handleSubmit}>
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="name"
+            >
               Name <span className="text-red-500">*</span>
             </label>
             <input
@@ -245,11 +265,18 @@ const FeedbackForm = () => {
               required
               aria-describedby={errors.name ? "name-error" : undefined}
             />
-            {errors.name && <p id="name-error" className="text-red-500 text-xs italic mt-1">{errors.name}</p>}
+            {errors.name && (
+              <p id="name-error" className="text-red-500 text-xs italic mt-1">
+                {errors.name}
+              </p>
+            )}
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="email"
+            >
               Email <span className="text-red-500">*</span>
             </label>
             <input
@@ -263,11 +290,18 @@ const FeedbackForm = () => {
               required
               aria-describedby={errors.email ? "email-error" : undefined}
             />
-            {errors.email && <p id="email-error" className="text-red-500 text-xs italic mt-1">{errors.email}</p>}
+            {errors.email && (
+              <p id="email-error" className="text-red-500 text-xs italic mt-1">
+                {errors.email}
+              </p>
+            )}
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="phone"
+            >
               Phone Number <span className="text-red-500">*</span>
             </label>
             <input
@@ -281,11 +315,18 @@ const FeedbackForm = () => {
               required
               aria-describedby={errors.phone ? "phone-error" : undefined}
             />
-            {errors.phone && <p id="phone-error" className="text-red-500 text-xs italic mt-1">{errors.phone}</p>}
+            {errors.phone && (
+              <p id="phone-error" className="text-red-500 text-xs italic mt-1">
+                {errors.phone}
+              </p>
+            )}
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="service">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="service"
+            >
               Service
             </label>
             <input
@@ -300,7 +341,10 @@ const FeedbackForm = () => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="feedback">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="feedback"
+            >
               Feedback
             </label>
             <textarea
@@ -315,7 +359,10 @@ const FeedbackForm = () => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="rating">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="rating"
+            >
               Rating (1-5) <span className="text-red-500">*</span>
             </label>
             <input
@@ -331,11 +378,18 @@ const FeedbackForm = () => {
               required
               aria-describedby={errors.rating ? "rating-error" : undefined}
             />
-            {errors.rating && <p id="rating-error" className="text-red-500 text-xs italic mt-1">{errors.rating}</p>}
+            {errors.rating && (
+              <p id="rating-error" className="text-red-500 text-xs italic mt-1">
+                {errors.rating}
+              </p>
+            )}
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="languagelearned">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="languagelearned"
+            >
               Language(s) learned
             </label>
             <input
@@ -346,34 +400,43 @@ const FeedbackForm = () => {
               placeholder="Languages (separate with spaces)"
               value={formData.languagelearned}
               onChange={handleChange}
-              aria-describedby={errors.languagelearned ? "languagelearned-error" : undefined}
+              aria-describedby={
+                errors.languagelearned ? "languagelearned-error" : undefined
+              }
             />
-            {errors.languagelearned && <p id="languagelearned-error" className="text-red-500 text-xs italic mt-1">{errors.languagelearned}</p>}
+            {errors.languagelearned && (
+              <p
+                id="languagelearned-error"
+                className="text-red-500 text-xs italic mt-1"
+              >
+                {errors.languagelearned}
+              </p>
+            )}
           </div>
           <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Upload File (Optional)
-          </label>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            accept=".jpg, .jpeg, .png, .pdf"
-            className="shadow appearance-none border rounded w-full py-3 px-4"
-          />
-        </div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Upload File (Optional)
+            </label>
+            <input
+              type="file"
+              onChange={handleFileChange}
+              accept=".jpg, .jpeg, .png, .pdf"
+              className="shadow appearance-none border rounded w-full py-3 px-4"
+            />
+          </div>
 
-          <input type="hidden" name="csrfToken" value={csrfToken || ''} />
-          
+          <input type="hidden" name="csrfToken" value={csrfToken || ""} />
+
           <div className="flex items-center justify-between">
-            <Button 
-              variant="default" 
-              type="submit" 
+            <Button
+              variant="default"
+              type="submit"
               disabled={!csrfToken || isSubmitting}
               className="bg-slate-700 hover:bg-slate-800 text-white py-2 px-4"
             >
               {isSubmitting ? "Submitting..." : "Submit Feedback"}
             </Button>
-            
+
             <p className="text-xs text-gray-500">
               <span className="text-red-500">*</span> Required fields
             </p>

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import dbConnect from "../../lib/mongodb";  
-import FAQ from "../../models/faq";  
+import dbConnect from "../../lib/mongodb";
+import FAQ from "../../models/faq";
 const predefinedFaqs = [
   {
     question: "What is Langsuit?",
@@ -54,28 +54,33 @@ const predefinedFaqs = [
   },
   {
     question: "How do you protect my personal data?",
-    answer: "We protect your personal data using advanced encryption techniques and by ensuring that only authorized personnel have access to it."
+    answer:
+      "We protect your personal data using advanced encryption techniques and by ensuring that only authorized personnel have access to it.",
   },
   {
     question: "Do you share my personal information with third parties?",
-    answer: "No, we do not share your personal information with third parties without your consent, except when required by law."
+    answer:
+      "No, we do not share your personal information with third parties without your consent, except when required by law.",
   },
   {
     question: "Can I delete my account or personal data?",
-    answer: "Yes, you can delete your account and personal data at any time by contacting our support team, and we will process your request as per the applicable data protection laws."
+    answer:
+      "Yes, you can delete your account and personal data at any time by contacting our support team, and we will process your request as per the applicable data protection laws.",
   },
   {
     question: "What happens if the Terms and Conditions change?",
-    answer: "If the Terms and Conditions change, we will notify users via email or on the app/website, and you will have the option to accept the new terms."
+    answer:
+      "If the Terms and Conditions change, we will notify users via email or on the app/website, and you will have the option to accept the new terms.",
   },
   {
     question: "How do I withdraw my consent to data processing?",
-    answer: "You can withdraw your consent by updating your preferences in your account settings or by contacting our support team directly."
-  }
+    answer:
+      "You can withdraw your consent by updating your preferences in your account settings or by contacting our support team directly.",
+  },
 ];
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (req.method !== "GET") {
     return res.status(405).json({ message: "Method not allowed" });
@@ -85,7 +90,9 @@ export default async function handler(
     await FAQ.deleteMany({});
     await FAQ.insertMany(predefinedFaqs);
     const faqs = await FAQ.find({});
-    res.status(200).json({ message: "Database seeded successfully", data: faqs });
+    res
+      .status(200)
+      .json({ message: "Database seeded successfully", data: faqs });
   } catch (error) {
     console.error("Error seeding database:", error);
     res.status(500).json({

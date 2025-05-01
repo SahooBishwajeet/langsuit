@@ -14,7 +14,7 @@ interface SuccessResponse {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<SuccessResponse | ErrorResponse>
+  res: NextApiResponse<SuccessResponse | ErrorResponse>,
 ) {
   const { method } = req;
   const lang = req.query.lang as string;

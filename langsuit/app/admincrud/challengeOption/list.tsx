@@ -21,10 +21,7 @@ export const ChallengeOptionsList = () => {
         "& .RaList-main": sharedStyles.card,
       }}
     >
-      <Datagrid
-        rowClick="edit"
-        sx={sharedStyles.table}
-      >
+      <Datagrid rowClick="edit" sx={sharedStyles.table}>
         <NumberField source="id" />
         <TextField source="text" />
         <BooleanField source="correct" />

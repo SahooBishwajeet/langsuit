@@ -1,7 +1,7 @@
 // For generic errors (500)
-'use client';
+"use client";
 
-import ErrorPage from '@/components/errors/ErrorPage';
+import ErrorPage from "@/components/errors/ErrorPage";
 
 export default function Error({
   error,

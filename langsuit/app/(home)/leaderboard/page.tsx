@@ -1,33 +1,38 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Trophy, Medal, Award } from 'lucide-react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import { Trophy, Medal, Award } from "lucide-react";
 
 const getUserProgress = async () => {
-    return {
-      hearts: 30,
-      points: 1500,
-      hasActiveSubscription: true,
-      activeCourse: {
-        title: "Spanish",
-        imageSrc: "/ES - Spain.svg",
-      },
-      userName: "Akshat",
-      userImageSrc: "/avatar-placeholder.png",
-    };
-    
-  
-  
+  return {
+    hearts: 30,
+    points: 1500,
+    hasActiveSubscription: true,
+    activeCourse: {
+      title: "Spanish",
+      imageSrc: "/ES - Spain.svg",
+    },
+    userName: "Akshat",
+    userImageSrc: "/avatar-placeholder.png",
+  };
 };
 
 const getTopTenUsers = async () => {
   try {
     const response = await fetch(`http://localhost:3000/api/leaderboard`);
-    if(!response.ok){
+    if (!response.ok) {
       return [
         { userId: 1, userName: "Alice", points: 2000 },
         { userId: 2, userName: "Bob", points: 1800 },
@@ -40,17 +45,14 @@ const getTopTenUsers = async () => {
         { userId: 9, userName: "Ivy", points: 900 },
         { userId: 10, userName: "Jack", points: 800 },
       ];
-  
-    } 
+    }
     const res_data = await response.json();
-    if(res_data && Array.isArray(res_data.data)){
+    if (res_data && Array.isArray(res_data.data)) {
       return res_data.data;
     }
-
-  
   } catch (error) {
     console.log(error);
-    return  [
+    return [
       { userId: 1, userName: "Alice", points: 2000 },
       { userId: 2, userName: "Bob", points: 1800 },
       { userId: 3, userName: "Charlie", points: 1600 },
@@ -62,7 +64,6 @@ const getTopTenUsers = async () => {
       { userId: 9, userName: "Ivy", points: 900 },
       { userId: 10, userName: "Jack", points: 800 },
     ];
-    
   }
 };
 
@@ -105,7 +106,7 @@ const FloatingLetter = ({ children, delay = 0 }) => {
 const LeaderboardPage = () => {
   const [userProgress, setUserProgress] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
-  const [view, setView] = useState('list');
+  const [view, setView] = useState("list");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -114,7 +115,9 @@ const LeaderboardPage = () => {
         getTopTenUsers(),
       ]);
       setUserProgress(progress);
-      setLeaderboard(board.map(user => ({ ...user, color: getRandomColor() })));
+      setLeaderboard(
+        board.map((user) => ({ ...user, color: getRandomColor() })),
+      );
     };
     fetchData();
   }, []);
@@ -122,9 +125,38 @@ const LeaderboardPage = () => {
   const MotionCard = motion(Card);
 
   const floatingLetters = [
-    'A', 'Б', 'C', 'Д', 'E', 'Ф', 'G', 'Ж', 'I', 'Й', 'K', 'Л',
-    'あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ',
-    '你', '我', '他', '她', '它', '们', '好', '是', '不', '在',
+    "A",
+    "Б",
+    "C",
+    "Д",
+    "E",
+    "Ф",
+    "G",
+    "Ж",
+    "I",
+    "Й",
+    "K",
+    "Л",
+    "あ",
+    "い",
+    "う",
+    "え",
+    "お",
+    "か",
+    "き",
+    "く",
+    "け",
+    "こ",
+    "你",
+    "我",
+    "他",
+    "她",
+    "它",
+    "们",
+    "好",
+    "是",
+    "不",
+    "在",
   ];
 
   return (
@@ -142,30 +174,33 @@ const LeaderboardPage = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-8 md:mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-4 tracking-tight">Leaderboard</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-4 tracking-tight">
+            Leaderboard
+          </h1>
           <p className="text-lg md:text-xl text-primary/80">
-            See where you stand among other language learners in our global community.
+            See where you stand among other language learners in our global
+            community.
           </p>
         </motion.div>
 
         <div className="mb-6 md:mb-8 flex justify-center space-x-4">
           <Button
-            variant={view === 'list' ? 'default' : 'outline'}
-            onClick={() => setView('list')}
+            variant={view === "list" ? "default" : "outline"}
+            onClick={() => setView("list")}
             className="font-semibold"
           >
             List View
           </Button>
           <Button
-            variant={view === 'graph' ? 'default' : 'outline'}
-            onClick={() => setView('graph')}
+            variant={view === "graph" ? "default" : "outline"}
+            onClick={() => setView("graph")}
             className="font-semibold"
           >
             Graph View
           </Button>
         </div>
 
-        {view === 'list' ? (
+        {view === "list" ? (
           <MotionCard
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -173,7 +208,9 @@ const LeaderboardPage = () => {
             className="backdrop-blur-md bg-background/60 shadow-lg"
           >
             <CardHeader>
-              <CardTitle className="text-2xl font-bold text-center text-primary">Top Performers</CardTitle>
+              <CardTitle className="text-2xl font-bold text-center text-primary">
+                Top Performers
+              </CardTitle>
             </CardHeader>
             <CardContent>
               {leaderboard.map((user, index) => (
@@ -185,10 +222,15 @@ const LeaderboardPage = () => {
                   className="flex items-center hover:bg-primary/5 rounded-lg transition-colors duration-200 mb-4 p-4"
                 >
                   <div className="mr-4 text-2xl">
-                    {index === 0 ? <Trophy className="text-yellow-400" /> :
-                     index === 1 ? <Medal className="text-gray-400" /> :
-                     index === 2 ? <Award className="text-orange-400" /> :
-                     <span className="font-bold">{index + 1}</span>}
+                    {index === 0 ? (
+                      <Trophy className="text-yellow-400" />
+                    ) : index === 1 ? (
+                      <Medal className="text-gray-400" />
+                    ) : index === 2 ? (
+                      <Award className="text-orange-400" />
+                    ) : (
+                      <span className="font-bold">{index + 1}</span>
+                    )}
                   </div>
                   <div
                     className="w-12 h-12 rounded-full mr-4 flex items-center justify-center text-white font-bold text-lg shadow-md"
@@ -196,7 +238,9 @@ const LeaderboardPage = () => {
                   >
                     {user.userName[0]}
                   </div>
-                  <p className="flex-1 font-semibold text-primary">{user.userName}</p>
+                  <p className="flex-1 font-semibold text-primary">
+                    {user.userName}
+                  </p>
                   <p className="font-bold text-secondary">{user.points} XP</p>
                 </motion.div>
               ))}
@@ -210,24 +254,33 @@ const LeaderboardPage = () => {
             className="backdrop-blur-md bg-background/60 shadow-lg"
           >
             <CardHeader>
-              <CardTitle className="text-2xl font-bold text-center text-primary">Points Comparison</CardTitle>
+              <CardTitle className="text-2xl font-bold text-center text-primary">
+                Points Comparison
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="w-full h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={leaderboard}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="var(--primary)" opacity={0.1} />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="var(--primary)"
+                      opacity={0.1}
+                    />
                     <XAxis dataKey="userName" stroke="var(--primary)" />
                     <YAxis stroke="var(--primary)" />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'var(--background)', 
-                        borderRadius: '8px',
-                        border: '1px solid var(--primary)',
-                        color: 'var(--primary)'
-                      }} 
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "var(--background)",
+                        borderRadius: "8px",
+                        border: "1px solid var(--primary)",
+                        color: "var(--primary)",
+                      }}
                     />
-                    <Bar dataKey="points" label={{ position: 'top', fill: 'var(--primary)' }}>
+                    <Bar
+                      dataKey="points"
+                      label={{ position: "top", fill: "var(--primary)" }}
+                    >
                       {leaderboard.map((entry, index) => (
                         <Bar key={`cell-${index}`} fill={entry.color} />
                       ))}
@@ -248,21 +301,29 @@ const LeaderboardPage = () => {
           >
             <Card className="backdrop-blur-md bg-background/60 shadow-lg">
               <CardHeader>
-                <CardTitle className="text-xl font-bold text-primary">Your Progress</CardTitle>
+                <CardTitle className="text-xl font-bold text-primary">
+                  Your Progress
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0">
                   <div>
                     <p className="text-sm text-primary/60">Active Course</p>
-                    <p className="font-semibold text-primary">{userProgress.activeCourse.title}</p>
+                    <p className="font-semibold text-primary">
+                      {userProgress.activeCourse.title}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-primary/60">Hearts</p>
-                    <p className="font-semibold text-red-500">{userProgress.hearts}</p>
+                    <p className="font-semibold text-red-500">
+                      {userProgress.hearts}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-primary/60">Points</p>
-                    <p className="font-semibold text-secondary">{userProgress.points} XP</p>
+                    <p className="font-semibold text-secondary">
+                      {userProgress.points} XP
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -275,4 +336,3 @@ const LeaderboardPage = () => {
 };
 
 export default LeaderboardPage;
-

@@ -1,10 +1,22 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
-import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { motion } from "framer-motion";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Table } from "react-bootstrap";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const dummyQuests = [
   {
@@ -42,23 +54,24 @@ const dummyQuests = [
   },
 ];
 
-const COLORS = ['#FFEC99', '#FFD700', '#FFB6C1'];
+const COLORS = ["#FFEC99", "#FFD700", "#FFB6C1"];
 
 const QuestsPage = () => {
   const { username } = useParams();
-  const [quests, setQuests]  = useState(dummyQuests);
+  const [quests, setQuests] = useState(dummyQuests);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-
     const fetchQuests = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:3000/api/quests/read?user_id=1`);
+        const response = await fetch(
+          `http://localhost:3000/api/quests/read?user_id=1`,
+        );
 
         if (!response.ok) {
-          throw new Error('Failed to fetch quests');
+          throw new Error("Failed to fetch quests");
         }
 
         const data = await response.json();
@@ -87,16 +100,32 @@ const QuestsPage = () => {
   }));
 
   return (
-    <div style={{ background: '#1c1c1c', color: '#f0f4fc', padding: '20px', minHeight: '100vh', position: 'relative' }}>
+    <div
+      style={{
+        background: "#1c1c1c",
+        color: "#f0f4fc",
+        padding: "20px",
+        minHeight: "100vh",
+        position: "relative",
+      }}
+    >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>Quests</h1>
+        <h1 style={{ textAlign: "center", marginBottom: "2rem" }}>Quests</h1>
 
         {}
-        <div style={{ marginBottom: '2rem', borderRadius: '8px', padding: '20px', background: '#2c2c2c', boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
+        <div
+          style={{
+            marginBottom: "2rem",
+            borderRadius: "8px",
+            padding: "20px",
+            background: "#2c2c2c",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+          }}
+        >
           <h2>Quest Completion Overview</h2>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -120,7 +149,15 @@ const QuestsPage = () => {
         </div>
 
         {}
-        <div style={{ marginBottom: '2rem', borderRadius: '8px', padding: '20px', background: '#2c2c2c', boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
+        <div
+          style={{
+            marginBottom: "2rem",
+            borderRadius: "8px",
+            padding: "20px",
+            background: "#2c2c2c",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+          }}
+        >
           <h2>Quest Progress</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={barData}>
@@ -135,7 +172,14 @@ const QuestsPage = () => {
         </div>
 
         {}
-        <div style={{ borderRadius: '8px', padding: '20px', background: '#2c2c2c', boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
+        <div
+          style={{
+            borderRadius: "8px",
+            padding: "20px",
+            background: "#2c2c2c",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+          }}
+        >
           <h2>{username}&apos;s Quest Details</h2>
           <Table striped bordered hover variant="dark">
             <thead>
@@ -149,11 +193,10 @@ const QuestsPage = () => {
             <tbody>
               {quests.map((quest) => (
                 <tr key={quest.id}>
-                  <td style={{ padding: '10px' }}>{quest.title}</td>
-                  <td style={{ padding: '10px' }}>{quest.description}</td>
-                  <td style={{ padding: '10px' }}>{quest.progress}%</td>
-                  <td style={{ padding: '10px' }}>{quest.rewardPoints}</td>
-
+                  <td style={{ padding: "10px" }}>{quest.title}</td>
+                  <td style={{ padding: "10px" }}>{quest.description}</td>
+                  <td style={{ padding: "10px" }}>{quest.progress}%</td>
+                  <td style={{ padding: "10px" }}>{quest.rewardPoints}</td>
                 </tr>
               ))}
             </tbody>
@@ -162,16 +205,19 @@ const QuestsPage = () => {
       </motion.div>
 
       {}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        background: 'url("https://www.transparenttextures.com/patterns/black-paper.png")',
-        opacity: 0.05,
-        pointerEvents: 'none'
-      }}></div>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background:
+            'url("https://www.transparenttextures.com/patterns/black-paper.png")',
+          opacity: 0.05,
+          pointerEvents: "none",
+        }}
+      ></div>
     </div>
   );
 };

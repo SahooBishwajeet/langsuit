@@ -1,24 +1,64 @@
-import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs-extra';
-import unzipper from 'unzipper';
-import path from 'path';
-import db from '@/db/drizzle';
-import { guidance, instructor, videosList, users } from '@/db/schema';
+import db from "@/db/drizzle";
+import { guidance, videosList } from "@/db/schema";
+import fs from "fs-extra";
+import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import unzipper from "unzipper";
 
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
+/**
+ * @swagger
+ * /api/guidance/upload:
+ *   post:
+ *     summary: Upload course content
+ *     description: Upload a zip file containing course videos and create a new course
+ *     tags: [Guidance]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - file
+ *               - title
+ *               - price
+ *               - username
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: Zip file containing course videos
+ *               title:
+ *                 type: string
+ *               price:
+ *                 type: string
+ *               username:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Course created successfully
+ *       400:
+ *         description: Missing required fields
+ *       404:
+ *         description: Instructor not found
+ *       500:
+ *         description: Internal server error
+ */
+
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 export const POST = async (req: NextRequest) => {
   try {
     // Parse FormData
     const formData = await req.formData();
-    const file = formData.get('file') as File;
-    const title = formData.get('title') as string;
-    const price = formData.get('price') as string;
-    const username = formData.get('username') as string;
+    const file = formData.get("file") as File;
+    const title = formData.get("title") as string;
+    const price = formData.get("price") as string;
+    const username = formData.get("username") as string;
 
     if (!file || !title || !price || !username) {
-      return NextResponse.json({ message: 'Missing fields' }, { status: 400 });
+      return NextResponse.json({ message: "Missing fields" }, { status: 400 });
     }
 
     // Find instructor by username (using db.query)
@@ -27,7 +67,10 @@ export const POST = async (req: NextRequest) => {
     });
 
     if (!foundUser) {
-      return NextResponse.json({ message: 'Instructor not found' }, { status: 404 });
+      return NextResponse.json(
+        { message: "Instructor not found" },
+        { status: 404 },
+      );
     }
 
     const foundInstructor = await db.query.instructor.findFirst({
@@ -35,11 +78,19 @@ export const POST = async (req: NextRequest) => {
     });
 
     if (!foundInstructor) {
-      return NextResponse.json({ message: 'Instructor not found' }, { status: 404 });
+      return NextResponse.json(
+        { message: "Instructor not found" },
+        { status: 404 },
+      );
     }
 
     // Create course path
-    const coursePath = path.join(process.cwd(), 'public', 'courses', `${Date.now()}_${title}`);
+    const coursePath = path.join(
+      process.cwd(),
+      "public",
+      "courses",
+      `${Date.now()}_${title}`,
+    );
     await fs.ensureDir(coursePath);
 
     // Save zip file temporarily
@@ -48,15 +99,21 @@ export const POST = async (req: NextRequest) => {
     await fs.writeFile(zipPath, buffer);
 
     // Extract zip file
-    await fs.createReadStream(zipPath)
+    await fs
+      .createReadStream(zipPath)
       .pipe(unzipper.Extract({ path: coursePath }))
       .promise();
 
     const files = await fs.readdir(coursePath);
-    const videoFiles = files.filter(file => file.endsWith('.mp4') || file.endsWith('.mkv'));
+    const videoFiles = files.filter(
+      (file) => file.endsWith(".mp4") || file.endsWith(".mkv"),
+    );
 
     if (videoFiles.length === 0) {
-      return NextResponse.json({ message: 'No valid video files found in the zip' }, { status: 400 });
+      return NextResponse.json(
+        { message: "No valid video files found in the zip" },
+        { status: 400 },
+      );
     }
 
     // Insert new course into the database
@@ -82,9 +139,15 @@ export const POST = async (req: NextRequest) => {
     // Remove zip file after extraction
     await fs.remove(zipPath);
 
-    return NextResponse.json({ message: 'Course created successfully', course: newCourse }, { status: 201 });
+    return NextResponse.json(
+      { message: "Course created successfully", course: newCourse },
+      { status: 201 },
+    );
   } catch (error) {
-    console.error('Error creating course:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    console.error("Error creating course:", error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 },
+    );
   }
 };

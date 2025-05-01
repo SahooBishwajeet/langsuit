@@ -4,7 +4,11 @@ import { FeedWrapper } from "@/components/feed-wrapper";
 import { Quests } from "@/components/quests";
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { UserProgress } from "@/components/user-progress";
-import { getCourseById, getUserProgress, getUserSubscription } from "@/db/queries";
+import {
+  getCourseById,
+  getUserProgress,
+  getUserSubscription,
+} from "@/db/queries";
 
 import { redirect } from "next/navigation";
 import { Items } from "./items";
@@ -26,7 +30,7 @@ const ShopPage = async () => {
     <div className="flex flex-row-reverse gap-[48px] px-6">
       <StickyWrapper>
         <UserProgress
-          activeCourse={{imageSrc: course.imageSrc,}}
+          activeCourse={{ imageSrc: course.imageSrc }}
           hearts={userProgress.hearts}
           points={userProgress.points}
           hasActiveSubscription={isPro}

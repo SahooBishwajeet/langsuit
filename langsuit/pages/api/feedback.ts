@@ -4,14 +4,17 @@ import Feedback from "../../models/feedback";
 import { validateCsrfToken } from "@/lib/csrf";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!validateCsrfToken(req)) {
-    return res.status(403).json({ error: 'Invalid CSRF token' });
+    return res.status(403).json({ error: "Invalid CSRF token" });
   }
   await dbConnect();
   if (req.method === "POST") {
     try {
-      const { name, email, phone, service, feedback, rating, languagelearned } = req.body;
+      const { name, email, phone, service, feedback, rating, languagelearned } =
+        req.body;
       if (!name || !email || !phone || !rating) {
-        return res.status(400).json({ message: "Name, email, phone, and rating are required!" });
+        return res
+          .status(400)
+          .json({ message: "Name, email, phone, and rating are required!" });
       }
       const newFeedback = new Feedback({
         name,
@@ -23,9 +26,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         languagelearned,
       });
       await newFeedback.save();
-      return res.status(201).json({ message: "Feedback submitted successfully!" });
+      return res
+        .status(201)
+        .json({ message: "Feedback submitted successfully!" });
     } catch (error) {
-      return res.status(500).json({ message: "Error saving feedback", error: error.message });
+      return res
+        .status(500)
+        .json({ message: "Error saving feedback", error: error.message });
     }
   } else {
     res.setHeader("Allow", ["POST"]);
