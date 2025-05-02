@@ -1,8 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
+
+// Dynamically import SwaggerUI with SSR disabled
+const SwaggerUI = dynamic(() => import("swagger-ui-react"), {
+  ssr: false,
+});
 
 const SwaggerDocs = () => {
   const [spec, setSpec] = useState(null);
@@ -23,8 +28,7 @@ const SwaggerDocs = () => {
   if (error) {
     return (
       <div className="p-4 text-red-500">
-        Access Denied: Only administrators can view API documentation in
-        production.
+        Access Denied: Only administrators can view API documentation in production.
       </div>
     );
   }
