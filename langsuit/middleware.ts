@@ -43,7 +43,8 @@ export default clerkMiddleware(async (auth, request) => {
 
   // Check if rate limit exceeded
   if (rateLimitData.count > MAX_REQUESTS) {
-    return new NextResponse("Rate limit exceeded", { status: 429 });
+    // return new NextResponse("Rate limit exceeded", { status: 429 });
+    // Removed due to deployment error
   }
 
   // Continue with auth protection
