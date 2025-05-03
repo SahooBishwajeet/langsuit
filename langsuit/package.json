@@ -81,7 +81,6 @@
     "zustand": "^5.0.1"
   },
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.27.1",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "@types/date-fns": "^2.6.0",
@@ -94,7 +93,6 @@
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-react": "^5.18.0",
     "@types/unzipper": "^0.10.11",
-    "babel-jest": "^29.7.0",
     "drizzle-kit": "^0.24.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.7",
