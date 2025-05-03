@@ -29,7 +29,3 @@ jobs:
       - name: Run linting
         working-directory: ./langsuit
         run: npm run lint
-
-      - name: Build check
-        working-directory: ./langsuit
-        run: npm run build

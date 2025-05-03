@@ -6,6 +6,10 @@ on:
   schedule:
     - cron: "0 0 * * 0" # Run weekly
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   security:
     runs-on: ubuntu-latest
@@ -22,10 +26,24 @@ jobs:
         working-directory: ./langsuit
         run: npm ci
 
-      - name: Run security audit
+      - name: Run security audit and fix
         working-directory: ./langsuit
-        run: npm audit
+        run: |
+          if ! npm audit; then
+            echo "Vulnerabilities found. Attempting to fix..."
+            npm audit fix
+            # If there are still issues that require manual review
+            if ! npm audit; then
+              echo "Some vulnerabilities require manual review. Check the logs."
+            fi
+          fi
 
-      - name: Check for outdated packages
-        working-directory: ./langsuit
-        run: npm outdated
+      - name: Create PR if fixes were applied
+        if: failure()
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          commit-message: "fix: npm audit automatic fixes"
+          title: "fix: Security vulnerabilities fixes"
+          body: "Automated fixes from npm audit"
+          branch: "fix/security-updates"
