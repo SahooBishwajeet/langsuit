@@ -65,7 +65,7 @@ export default function DashboardClient({ isAdmin }: { isAdmin: boolean }) {
             title="User Dashboard"
             description="View your learning progress, achievements, and manage your profile"
             icon={Users}
-            href="/user/dashboard"
+            href="/user/naive1"
             delay={0.2}
           />
 
@@ -73,7 +73,7 @@ export default function DashboardClient({ isAdmin }: { isAdmin: boolean }) {
             title="Instructor Dashboard"
             description="Manage your courses, track student progress, and view analytics"
             icon={LineChart}
-            href="/instructor/dashboard"
+            href="/instructor/Inst1"
             delay={0.4}
           />
 
