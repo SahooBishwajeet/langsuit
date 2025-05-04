@@ -5,17 +5,17 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Cell,
+    Legend,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
 } from "recharts";
 
 const dummyQuests = [
@@ -67,7 +67,7 @@ const QuestsPage = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://localhost:3000/api/quests/read?user_id=1`,
+          `/api/quests/read?user_id=1`,
         );
 
         if (!response.ok) {

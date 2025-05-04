@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePathname, useParams } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
-import { Trophy, Globe, LineChart, Compass, BookOpen } from "lucide-react";
-import axios from "axios";
-import { NavItem } from "../sidebar/nav-item";
 import { cn } from "@/lib/utils";
 import { useInstructorSidebar } from "@/store/use-instructorsidebar";
+import { useUser } from "@clerk/nextjs";
+import axios from "axios";
+import { BookOpen, Compass, Globe, Trophy } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { NavItem } from "../sidebar/nav-item";
 
 class User {
   username: string;
@@ -24,7 +24,7 @@ class User {
 
   async fetchUser() {
     try {
-      const response = await axios.post("http://localhost:3000/api/user", {
+      const response = await axios.post("/api/user", {
         username: this.username,
         role: this.role,
       });
@@ -42,7 +42,7 @@ class User {
   async fetchLanguageProgress() {
     try {
       const languageProgress = await axios.get(
-        `http://localhost:3000/api/user/${this.userId}/language-progress`,
+        `/api/user/${this.userId}/language-progress`,
       );
       if (languageProgress.data?.length > 0) {
         this.languageId = languageProgress.data[0].languageId; // Example: Set first languageId
@@ -65,7 +65,7 @@ export const Navigation = () => {
   // useEffect(() => {
   //     const fetchUser = async () => {
   //         try {
-  //             const response = await axios.post('http://localhost:3000/api/user', {
+  //             const response = await axios.post('/api/user', {
   //                 username: paramUsername,
   //                 role: "instructor"
   //             });

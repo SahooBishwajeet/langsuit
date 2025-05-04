@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
+import { Card } from "@/components/ui/card";
 import { setSearchQuery } from "@/redux/searchSlice";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // Type definition for Guidance
 interface Guidance {
@@ -32,7 +32,7 @@ const CourseSelectionPage: React.FC = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          "http://localhost:3000/api/guidance/available",
+          "/api/guidance/available",
           {
             method: "GET",
           },

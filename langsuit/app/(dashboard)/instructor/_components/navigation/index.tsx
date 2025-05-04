@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePathname, useParams } from "next/navigation";
-import { Fullscreen, KeyRound, MessageSquare, Users } from "lucide-react";
-import axios from "axios";
-import { NavItem } from "../sidebar/nav-item";
 import { cn } from "@/lib/utils";
 import { useInstructorSidebar } from "@/store/use-instructorsidebar";
+import axios from "axios";
+import { Fullscreen, KeyRound, MessageSquare, Users } from "lucide-react";
+import { useParams, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { NavItem } from "../sidebar/nav-item";
 
 export const Navigation = () => {
   const pathname = usePathname();
@@ -18,7 +18,7 @@ export const Navigation = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.post("http://localhost:3000/api/user", {
+        const response = await axios.post("/api/user", {
           username: paramUsername,
           role: "instructor",
         });

@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogCancel,
-  AlertDialogFooter,
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
-import { Users, Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Lock, Users } from "lucide-react";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 const combineClasses = (...classes) => {
   return classes.filter(Boolean).join(" ");
 };
@@ -28,7 +28,7 @@ const TicketModal = ({
     const [row, column] = seat.split("");
     try {
       console.log(userId);
-      const response = await fetch("http://localhost:3000/api/ticket/buy", {
+      const response = await fetch("/api/ticket/buy", {
         method: "POST",
         body: JSON.stringify({ userId, guidanceId, row, column }),
       });
@@ -128,7 +128,7 @@ const SeatGrid = ({
   useEffect(() => {
     const fetchUserId = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/user/id", {
+        const response = await fetch("/api/user/id", {
           method: "GET",
         });
         const data = await response.json();
@@ -145,7 +145,7 @@ const SeatGrid = ({
     const fetchBookedSeats = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/ticket/booked",
+          "/api/ticket/booked",
           {
             method: "POST",
             body: JSON.stringify({ guidanceId }),

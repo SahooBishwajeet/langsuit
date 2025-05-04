@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Leaderboard = ({ username }) => {
   const [leaderboardData, setLeaderboardData] = useState([]);
@@ -11,7 +11,7 @@ const Leaderboard = ({ username }) => {
     const fetchLeaderboard = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/leaderboard?username=${username}`,
+          `/api/leaderboard?username=${username}`,
         );
         setLeaderboardData(response.data);
         setLoading(false);

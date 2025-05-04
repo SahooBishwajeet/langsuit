@@ -2,20 +2,20 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-} from "recharts";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import {
+    Area,
+    AreaChart,
+    CartesianGrid,
+    Legend,
+    Line,
+    LineChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from "recharts";
 
 type BackendData = {
   weekly: any[];
@@ -81,7 +81,7 @@ const LeaderboardPage = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/api/leaderboard/read?user_id=1`,
+          `/api/leaderboard/read?user_id=1`,
         );
 
         if (!response.ok) {

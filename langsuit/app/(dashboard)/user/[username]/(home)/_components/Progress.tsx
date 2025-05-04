@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Progress = ({ username }) => {
   const [progressData, setProgressData] = useState([]);
@@ -10,7 +10,7 @@ const Progress = ({ username }) => {
     const fetchProgress = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/user/${username}/progress`,
+          `/api/user/${username}/progress`,
         );
         setProgressData(response.data);
         setLoading(false);

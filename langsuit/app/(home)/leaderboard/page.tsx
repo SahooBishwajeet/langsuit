@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { motion, useAnimation } from "framer-motion";
+import { Award, Medal, Trophy } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
+    Bar,
+    BarChart,
+    CartesianGrid,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
 } from "recharts";
-import { Trophy, Medal, Award } from "lucide-react";
 
 const getUserProgress = async () => {
   return {
@@ -31,7 +31,7 @@ const getUserProgress = async () => {
 
 const getTopTenUsers = async () => {
   try {
-    const response = await fetch(`http://localhost:3000/api/leaderboard`);
+    const response = await fetch(`/api/leaderboard`);
     if (!response.ok) {
       return [
         { userId: 1, userName: "Alice", points: 2000 },
