@@ -22,7 +22,7 @@ const UsersPage = () => {
   const [statCardData, setStatCardData] = useState<StatCardData | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
-
+  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     const fetchStatCardData = async () => {
       try {
@@ -35,6 +35,7 @@ const UsersPage = () => {
         console.log(data);
         setStatCardData(data);
       } catch (error) {
+        setError("Failed to fetch stat card data");
         console.error("Error fetching stat card data:", error);
       }
     };

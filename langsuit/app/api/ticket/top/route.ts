@@ -1,5 +1,5 @@
 import db from "@/db/drizzle";
-import { courses, tickets } from "@/db/schema";
+import { courses, tickets, sales } from "@/db/schema";
 import { sql } from "drizzle-orm";
 
 /**
@@ -32,31 +32,29 @@ import { sql } from "drizzle-orm";
 
 export async function GET() {
   try {
-    // Query to get the course with the most tickets sold
+    // Get course sales data through the sales table
     const result = await db
       .select({
         courseTitle: courses.title,
-        ticketCount: sql<number>`count(${tickets.id})`.as("ticket_count"),
+        salesCount: sql<number>`count(${sales.id})`.as("sales_count"),
       })
-      .from(tickets)
-      .innerJoin(courses, sql`${tickets.courseId} = ${courses.id}`)
-      .groupBy(courses.id, courses.title)
-      .orderBy(sql`ticket_count DESC`)
+      .from(sales)
+      .innerJoin(courses, sql`${sales.courseId} = ${courses.id}`)
+      .groupBy(courses.id)
+      .orderBy(sql`sales_count DESC`)
       .limit(1);
 
-    // Check if we found any results
     if (!result.length) {
       return Response.json(
-        { error: "No courses found with tickets" },
-        { status: 404 },
+        { error: "No course sales found" },
+        { status: 404 }
       );
     }
 
-    // Return the top selling course
     return Response.json({
       topCourse: {
         title: result[0].courseTitle,
-        totalTickets: result[0].ticketCount,
+        totalSales: result[0].salesCount,
       },
     });
   } catch (error) {

@@ -11,6 +11,7 @@ import {
   timestamp,
   varchar,
   numeric,
+  index,
 } from "drizzle-orm/pg-core";
 
 // Reusable chunks
@@ -31,14 +32,20 @@ export const users = pgTable("users", {
   role: text("role").notNull(),
   registeredAt: timestamp("registered_at").defaultNow().notNull(),
   hasPurchased: boolean("has_purchased").default(false).notNull(),
-});
+}, (table) => ({
+  usernameIdx: index("users_username_idx").on(table.username),
+  emailIdx: index("users_email_idx").on(table.email),
+  roleIdx: index("users_role_idx").on(table.role),
+}));
 
 export const instructor = pgTable("instructor", {
   id: serial("id").primaryKey(),
   userId: integer("user_id")
     .notNull()
     .references(() => users.id),
-});
+}, (table) => ({
+  userIdIdx: index("instructor_user_id_idx").on(table.userId),
+}));
 
 export const instructorRelation = relations(instructor, ({ one, many }) => ({
   user: one(users, {
@@ -58,7 +65,10 @@ export const courses = pgTable("courses", {
   visits: integer("visits").default(0),
   description: text("description"),
   level: text("level"),
-});
+}, (table) => ({
+  instructorIdIdx: index("courses_instructor_id_idx").on(table.instructorId),
+  categoryIdx: index("courses_category_idx").on(table.category),
+}));
 
 export const videos = pgTable("videos", {
   id: serial("id").primaryKey(),
@@ -68,7 +78,9 @@ export const videos = pgTable("videos", {
   duration: text("duration"),
   thumbnailUrl: text("thumbnail_url"),
   order: integer("order").default(0),
-});
+}, (table) => ({
+  courseIdIdx: index("videos_course_id_idx").on(table.courseId),
+}));
 
 export const coursesRelations = relations(courses, ({ many }) => ({
   videos: many(videos),
@@ -96,7 +108,9 @@ export const units = pgTable("units", {
     .notNull()
     .references(() => courses.id, { onDelete: "cascade" }),
   order: integer("order").notNull(),
-});
+}, (table) => ({
+  courseIdIdx: index("units_course_id_idx").on(table.courseId),
+}));
 
 export const unitsRelations = relations(units, ({ many, one }) => ({
   course: one(courses, {
@@ -113,7 +127,9 @@ export const lessons = pgTable("lessons", {
     .references(() => units.id, { onDelete: "cascade" })
     .notNull(),
   order: integer("order").notNull(),
-});
+}, (table) => ({
+  unitIdIdx: index("lessons_unit_id_idx").on(table.unitId),
+}));
 
 export const lessonsRelations = relations(lessons, ({ many, one }) => ({
   unit: one(units, {
@@ -133,7 +149,9 @@ export const challenges = pgTable("challenges", {
     .references(() => lessons.id, { onDelete: "cascade" })
     .notNull(),
   order: integer("order").notNull(),
-});
+}, (table) => ({
+  lessonIdIdx: index("challenges_lesson_id_idx").on(table.lessonId),
+}));
 
 export const challengeOptions = pgTable("challenge_options", {
   id: serial("id").primaryKey(),
@@ -144,7 +162,9 @@ export const challengeOptions = pgTable("challenge_options", {
   correct: boolean("correct").notNull(),
   imageSrc: text("image_src"),
   audioSrc: text("audio_src"),
-});
+}, (table) => ({
+  challengeIdIdx: index("challenge_options_challenge_id_idx").on(table.challengeId),
+}));
 
 export const challengesRelations = relations(challenges, ({ many, one }) => ({
   lesson: one(lessons, {
@@ -172,7 +192,10 @@ export const challengeProgress = pgTable("challenge_progress", {
     .references(() => challenges.id, { onDelete: "cascade" })
     .notNull(),
   completed: boolean("completed").notNull().default(false),
-});
+}, (table) => ({
+  userIdIdx: index("challenge_progress_user_id_idx").on(table.userId),
+  challengeIdIdx: index("challenge_progress_challenge_id_idx").on(table.challengeId),
+}));
 
 export const challengeProgressRelations = relations(
   challengeProgress,
@@ -193,14 +216,18 @@ export const userProgress = pgTable("user_progress", {
   }),
   hearts: integer("hearts").notNull().default(5),
   points: integer("points").notNull().default(0),
-});
+}, (table) => ({
+  activeCourseIdIdx: index("user_progress_active_course_id_idx").on(table.activeCourseId),
+}));
 
 export const admin = pgTable("admin", {
   id: serial("id").primaryKey(),
   userId: integer("user_id")
     .notNull()
     .references(() => users.id),
-});
+}, (table) => ({
+  userIdIdx: index("admin_user_id_idx").on(table.userId),
+}));
 
 export const naive = pgTable("naive", {
   id: serial("id").primaryKey(),
@@ -221,6 +248,8 @@ export const followList = pgTable(
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.instructorId] }),
+    userIdIdx: index("follow_list_user_id_idx").on(table.userId),
+    instructorIdIdx: index("follow_list_instructor_id_idx").on(table.instructorId),
   }),
 );
 
@@ -252,7 +281,12 @@ export const liveStream = pgTable("live_stream", {
   isChatEnabled: boolean("is_chat_enabled"),
   isChatDelayed: boolean("is_chat_delayed"),
   isChatFollowersOnly: boolean("is_chat_followers_only"),
-});
+}, (table) => ({
+  instructorIdIdx: index("live_stream_instructor_id_idx").on(table.instructorId),
+  dateIdx: index("live_stream_date_idx").on(table.date),
+  isLiveIdx: index("live_stream_is_live_idx").on(table.isLive),
+}));
+
 export const leaderboard = pgTable("leaderboard", {
   userId: integer("user_id")
     .notNull()
@@ -260,7 +294,11 @@ export const leaderboard = pgTable("leaderboard", {
   type: text("type"),
   period: text("period"),
   points: integer("points"),
-});
+}, (table) => ({
+  userIdIdx: index("leaderboard_user_id_idx").on(table.userId),
+  typePeriodIdx: index("leaderboard_type_period_idx").on(table.type, table.period),
+}));
+
 export const liveStreamRelation = relations(liveStream, ({ one }) => ({
   instructor: one(instructor, {
     fields: [liveStream.instructorId],
@@ -269,7 +307,7 @@ export const liveStreamRelation = relations(liveStream, ({ one }) => ({
 }));
 
 export const tickets = pgTable("tickets", {
-  id: serial("id").primaryKey(), // Auto-incrementing primary key
+  id: serial("id").primaryKey(),
   guidanceId: integer("guidance_id")
     .notNull()
     .references(() => guidance.id, { onDelete: "cascade" }),
@@ -278,7 +316,11 @@ export const tickets = pgTable("tickets", {
   column: integer("column").notNull(),
   purchasedAt: timestamp("purchased_at").defaultNow().notNull(),
   isBooked: boolean("is_booked").default(false).notNull(),
-});
+}, (table) => ({
+  guidanceIdIdx: index("tickets_guidance_id_idx").on(table.guidanceId),
+  userIdIdx: index("tickets_user_id_idx").on(table.userId),
+  isBookedIdx: index("tickets_is_booked_idx").on(table.isBooked),
+}));
 
 export const sales = pgTable("sales", {
   ...id,
@@ -289,7 +331,11 @@ export const sales = pgTable("sales", {
   courseId: integer("course_id").references(() => courses.id),
   streamId: integer("stream_id").references(() => liveStream.id),
   amount: integer("amount").notNull(),
-});
+}, (table) => ({
+  userIdIdx: index("sales_user_id_idx").on(table.userId),
+  courseIdIdx: index("sales_course_id_idx").on(table.courseId),
+  streamIdIdx: index("sales_stream_id_idx").on(table.streamId),
+}));
 
 export const salesRelations = relations(sales, ({ one }) => ({
   users: one(users, {
@@ -313,7 +359,11 @@ export const userSubscription = pgTable("user_subscription", {
   stripeSubscriptionId: text("stripe_subscription_id").notNull().unique(),
   stripePriceId: text("stripe_price_id").notNull(),
   stripeCurrentPeriodEnd: timestamp("stripe_current_period_end").notNull(),
-});
+}, (table) => ({
+  userIdIdx: index("user_subscription_user_id_idx").on(table.userId),
+  stripeCustomerIdIdx: index("user_subscription_stripe_customer_id_idx").on(table.stripeCustomerId),
+  stripeSubscriptionIdIdx: index("user_subscription_stripe_subscription_id_idx").on(table.stripeSubscriptionId),
+}));
 
 export const userQuests = pgTable("userQuests", {
   userId: integer("user_id")
@@ -324,7 +374,9 @@ export const userQuests = pgTable("userQuests", {
   description: text("description"),
   rewardPoints: integer("reward_points"),
   progress: integer("progress"),
-});
+}, (table) => ({
+  userIdIdx: index("user_quests_user_id_idx").on(table.userId),
+}));
 
 export const languageProgress = pgTable("language_progress", {
   userId: integer("user_id")
@@ -334,7 +386,10 @@ export const languageProgress = pgTable("language_progress", {
   languageId: integer("language_id").notNull(),
   languageName: text("language_name"),
   progress: integer("progress"),
-});
+}, (table) => ({
+  userIdIdx: index("language_progress_user_id_idx").on(table.userId),
+  languageIdIdx: index("language_progress_language_id_idx").on(table.languageId),
+}));
 
 export const guidance = pgTable("guidance", {
   id: serial("id").primaryKey(),
@@ -347,11 +402,15 @@ export const guidance = pgTable("guidance", {
   durationInHours: integer("duration_in_hours").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+}, (table) => ({
+  instructorIdIdx: index("guidance_instructor_id_idx").on(table.instructorId)
+}));
 
 export const videosList = pgTable("videos_list", {
   id: serial("id").primaryKey(),
   courseId: integer("courseId").references(() => guidance.id),
   title: text("title"),
   url: text("url"),
-});
+}, (table) => ({
+  courseIdIdx: index("videos_list_course_id_idx").on(table.courseId),
+}));

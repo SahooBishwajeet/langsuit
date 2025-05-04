@@ -1,5 +1,5 @@
 import db from "@/db/drizzle";
-import { courses, tickets } from "@/db/schema";
+import { courses, tickets, sales } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
 
 /**
@@ -35,20 +35,20 @@ export async function GET() {
     const courseSales = await db
       .select({
         name: courses.title,
-        value: sql<number>`count(*) * 100`,
+        value: sql<number>`sum(${sales.amount})`.as("total_sales"), // Sum actual payment amounts
       })
-      .from(tickets)
-      .innerJoin(courses, eq(tickets.courseId, courses.id))
-      .where(sql`${tickets.isBooked} = true`)
-      .groupBy(courses.title)
-      .orderBy(sql`count(*) DESC`); // Order by highest sales first
+      .from(sales)
+      .innerJoin(courses, sql`${sales.courseId} = ${courses.id}`) // Correct relationship
+      .where(sql`${sales.courseId} IS NOT NULL`) // Only include course sales
+      .groupBy(courses.id, courses.title) // Group by primary key + title
+      .orderBy(sql`total_sales DESC`);
 
     return Response.json({ data: courseSales }, { status: 200 });
   } catch (error) {
     console.error("Error calculating course sales:", error);
     return Response.json(
       { error: "Failed to calculate course sales" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
