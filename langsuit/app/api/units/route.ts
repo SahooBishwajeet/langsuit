@@ -49,18 +49,35 @@
  */
 
 import { type NextRequest, NextResponse } from "next/server";
+import { getCachedResponse } from "@/lib/cache";
+import { invalidateCache } from "@/lib/cache-utils";
 
 import db from "@/db/drizzle";
 import { units } from "@/db/schema";
 import { getIsAdmin } from "@/lib/admin";
 
-export const GET = async () => {
-  const isAdmin = getIsAdmin();
-  if (!isAdmin) return new NextResponse("Unauthorized.", { status: 401 });
+export async function GET() {
+  try {
+    const isAdmin = getIsAdmin();
+    if (!isAdmin) return new NextResponse("Unauthorized.", { status: 401 });
 
-  const data = await db.query.units.findMany();
+    const units = await getCachedResponse(
+      'units',
+      async () => {
+        const result = await db.query.units.findMany();
+        return result;
+      },
+      900 // 15 minutes cache
+    );
 
-  return NextResponse.json(data);
+    return NextResponse.json(units);
+  } catch (error) {
+    console.error("Error fetching units:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch units" },
+      { status: 500 },
+    );
+  }
 };
 
 export const POST = async (req: NextRequest) => {
